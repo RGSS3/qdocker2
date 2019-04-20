@@ -12,3 +12,5 @@ timeout /T 5
 start http://localhost:18080
 ```
 Then pack all rest files
+
+If you make a self-extracting file like I do, (WinRAR is used). You will get a ~600KB mini client exe file.
