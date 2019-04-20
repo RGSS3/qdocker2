@@ -5,7 +5,8 @@ set QEMU.EXE=%QEMU%qemu-system-x86_64.exe
 set QEMU-IMG.EXE=%QEMU%qemu-img.exe
 set DOCKER.ISO=%~dp0boot2docker.iso
 set HDA=%~dp0hda.raw
-set CMDS=%*
+if not "%QDOCKER.EXT%" == "" set CMDS=%* %QDOCKER.EXT%
+if "%QDOCKER.EXT%" == "" set CMDS=%*
 if "%QDOCKER.USEDISK%" == "1" (
   set QDOCKER.HDA=-drive format=raw,file=%HDA%
   if not exist %HDA% (
