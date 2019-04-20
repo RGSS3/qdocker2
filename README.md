@@ -1,7 +1,7 @@
 # qdocker2
 Mini client Docker on Windows with HAXM support and tools
 
-# SYNOPSIS 
+## SYNOPSIS 
 ```batchfile
 start run-haxm-4096M-nodisk.cmd
 call ssh_wait.cmd
@@ -11,4 +11,4 @@ start puttycmd.cmd "docker run --rm -p 8080:3050 swipl/swish"
 timeout /T 5
 start http://localhost:18080
 ```
-
+Then pack all rest files
