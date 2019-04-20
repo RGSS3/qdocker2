@@ -10,11 +10,15 @@ if not exist "qemu.2019.2\qemu-system-x86_64.exe" (
 if not exist "putty\putty.exe" (
   if not exist "putty.zip" (
      echo Fetching SSH tool
-     call :download https://the.earth.li/~sgtatham/putty/0.71/w64/putty.zip putty.zip
+     call :download1 http://registry.npm.taobao.org/qdocker/download/qdocker-1.0.4.tgz qdocker-1.0.4.tgz
   ) 
   echo Unzipping SSH tool
-  call :unzip putty.zip putty
+  call :un7z qdocker-1.0.4 putty putty
+  call :un7z qdocker-1.0.4 haxm haxm
+  del qdocker-1.0.4.tar
 )
+
+del *.tgz 2>nul
 
 exit /b
 :fetch-bin
@@ -26,12 +30,8 @@ if exist qdocker-1.0.3.tgz goto extract
 call :download1 http://registry.npm.taobao.org/qdocker/download/qdocker-1.0.3.tgz qdocker-1.0.3.tgz
 :extract
 echo Unzip binary
-call 7za.exe x -y qdocker-1.0.2.tgz -o.
-call 7za.exe x -y qdocker-1.0.2.tar -otmp
-move /Y tmp\package\boot2docker.iso boot2docker.iso
-call 7za.exe x -y qdocker-1.0.3.tgz -o.
-call 7za.exe x -y qdocker-1.0.3.tar -otmp
-move /Y tmp\package\qemu.2019.2 qemu.2019.2
+call :un7z qdocker-1.0.2 boot2docker.iso boot2docker.iso
+call :un7z qdocker-1.0.3 qemu.2019.2 qemu.2019.2
 rd tmp /s/q
 del qdocker-1.0.2.tar
 del qdocker-1.0.3.tar
@@ -45,4 +45,10 @@ exit /b
 
 :unzip
 powershell -c "Expand-Archive -DestinationPath %2 -Force %1"
+exit /b
+
+:un7z
+call 7za.exe x -y %1.tgz -o. >nul 2>nul
+call 7za.exe x -y %1.tar -otmp >nul 2>nul
+move /Y tmp\package\%2 %3
 exit /b
