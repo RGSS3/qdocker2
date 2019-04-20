@@ -21,8 +21,8 @@ call :run-qemu %CMDS%
 exit /b
 
 :run-qemu
-echo %QEMU.EXE% -net nic -net user,hostfwd=tcp::5022-:22 -cdrom %DOCKER.ISO%  -boot d %* %QDOCKER.HDA%
-%QEMU.EXE% -net nic -net user,hostfwd=tcp::5022-:22 -cdrom %DOCKER.ISO%  -boot d %* %QDOCKER.HDA%
+echo %QEMU.EXE% -net nic -net user,hostfwd=tcp::5022-:22,hostfwd=tcp::10080-:80,hostfwd=tcp::18080-:8080 -cdrom %DOCKER.ISO%  -boot d %* %QDOCKER.HDA%
+%QEMU.EXE% -net nic -net user,hostfwd=tcp::5022-:22,hostfwd=tcp::10080-:80,hostfwd=tcp::18080-:8080 -cdrom %DOCKER.ISO%  -boot d %* %QDOCKER.HDA%
 exit /b
 :create-disk
 echo boot2docker, please format-me > %HDA%

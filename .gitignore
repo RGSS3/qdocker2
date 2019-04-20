@@ -9,3 +9,5 @@ putty
 putty.zip
 qdocker*.tgz
 boot2docker.iso
+*~
+*.swp
