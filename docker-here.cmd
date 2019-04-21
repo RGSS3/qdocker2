@@ -1,6 +1,6 @@
 @echo off
 if "%1"=="" (
-    echo "docker-here password"
+    echo docker-here password
 )
 setlocal
 set dir=%CD%
