@@ -8,7 +8,7 @@ set HDA=%~dp0hda.raw
 if not "%QDOCKER.EXT%" == "" set CMDS=%* %QDOCKER.EXT%
 if "%QDOCKER.EXT%" == "" set CMDS=%*
 if "%QDOCKER.USEDISK%" == "1" (
-  set QDOCKER.HDA=-drive format=raw,file=%HDA%
+  set QDOCKER.HDA=-drive format=qcow2,file=%HDA%
   if not exist %HDA% (
     call :create-disk
   )
@@ -22,12 +22,13 @@ call :run-qemu %CMDS%
 exit /b
 
 :run-qemu
-echo %QEMU.EXE% -net nic -net user,hostfwd=tcp::5022-:22,hostfwd=tcp::10080-:80,hostfwd=tcp::18080-:8080 -cdrom %DOCKER.ISO%  -boot d %* %QDOCKER.HDA%
-%QEMU.EXE% -net nic -net user,hostfwd=tcp::5022-:22,hostfwd=tcp::10080-:80,hostfwd=tcp::18080-:8080 -cdrom %DOCKER.ISO%  -boot d %* %QDOCKER.HDA%
+echo start /min %QEMU.EXE% -net nic -net user,hostfwd=tcp::12376-:2376,hostfwd=tcp::12375-:2375,hostfwd=tcp::5022-:22,hostfwd=tcp::10080-:80,hostfwd=tcp::18080-:8080 -cdrom %DOCKER.ISO%  -boot d %* %QDOCKER.HDA%  -nographic
+call start /min %QEMU.EXE% -net nic -net user,hostfwd=tcp::12376-:2376,hostfwd=tcp::12375-:2375,hostfwd=tcp::5022-:22,hostfwd=tcp::10080-:80,hostfwd=tcp::18080-:8080 -cdrom %DOCKER.ISO%  -boot d %* %QDOCKER.HDA% -nographic
+call ssh_wait.cmd
+call init.cmd
 exit /b
 :create-disk
-echo boot2docker, please format-me > %HDA%
-%QEMU-IMG.EXE% resize -f raw %HDA% 8G 
+call create_disk.cmd 8G
 exit /b
 
 REM -kernel bzImage -append "root=/dev/sda2 panic=1 rootfstype=ext4 rw console=tty0"
